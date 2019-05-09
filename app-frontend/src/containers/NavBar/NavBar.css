@@ -1,0 +1,66 @@
+.navigation-bar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.navigation-bar li {
+    /* display: inline-block; */
+    margin: 20px;
+}
+
+
+/* .navigation-bar a {
+    text-decoration: none;
+    color: black;
+}
+
+.navigation-bar a:hover,
+.navigation-bar a:active,
+.navigation-bar a.active {
+    color: #fa923f;
+} */
+
+.cols {
+    display: flex;
+}
+
+#left {
+    flex: 2;
+}
+
+#right {
+    flex: 6;
+}
+
+.top {
+    height: 70px;
+}
+
+.top-left {
+    background-color: rgb(2, 1, 0);
+}
+
+.top-right {
+    background-color: #ddd;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 100%;
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
