@@ -12,42 +12,19 @@
 }
 
 
-/* .navigation-bar a {
+.navigation-bar a {
     text-decoration: none;
     color: black;
+    padding: 0;
 }
 
 .navigation-bar a:hover,
 .navigation-bar a:active,
 .navigation-bar a.active {
     color: #fa923f;
-} */
-
-.cols {
-    display: flex;
 }
 
-#left {
-    flex: 2;
-}
-
-#right {
-    flex: 6;
-}
-
-.top {
-    height: 70px;
-}
-
-.top-left {
-    background-color: rgb(2, 1, 0);
-}
-
-.top-right {
-    background-color: #ddd;
-}
-
-.App-logo {
+/* .App-logo {
     animation: App-logo-spin infinite 20s linear;
     height: 100%;
     pointer-events: none;
@@ -63,4 +40,4 @@
     to {
         transform: rotate(360deg);
     }
-}
+} */

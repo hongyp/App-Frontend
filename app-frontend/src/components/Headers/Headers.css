@@ -1,0 +1,34 @@
+:root {
+    --height: 70px;
+}
+
+.headers {
+    height: var(--height);
+}
+
+.row {
+    width: 25%;
+    display: inline-block;
+}
+
+.left {
+    background-color: rgb(232, 154, 86);
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: var(--height);
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
