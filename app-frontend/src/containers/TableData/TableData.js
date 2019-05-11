@@ -10,10 +10,12 @@ import ResourcePage from '../../components/Resource/Resource.js'
 import ProjectPage from '../../components/Project/Project.js'
 import FormulaPage from '../../components/Formula/Formula.js'
 import LoginPage from '../../components/Login/Login.js'
+import SignupPage from '../../components/Signup/Signup.js'
 
 class TableData extends Component {
 
     state = {
+        auth: true,
         showSideBar: false
     }
 
@@ -46,6 +48,7 @@ class TableData extends Component {
                     <Switch>
                         {this.state.auth ? < Route path="/Resource" component={ResourcePage} /> : null}
                         <Route path="/login" component={LoginPage} />
+                        <Route path="/signup" component={SignupPage} />
                         <Route path="/Resource" component={ResourcePage} />
                         <Route path="/Project" component={ProjectPage} />
                         <Route path="/Formula" component={FormulaPage} />
