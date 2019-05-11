@@ -1,0 +1,30 @@
+.LoginForm {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Img {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: auto;
+}
+
+.FormBottom {
+    width: 50%;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.BottomBtn {
+    width: 60%;
+}
+
+.BottomText {
+    text-align: right;
+}
+
+.BottomText:hover {
+    color: #fa923f;
+    cursor: pointer;
+}

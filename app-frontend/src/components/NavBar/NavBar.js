@@ -11,6 +11,11 @@ class NavBar extends Component {
 
     render() {
 
+        const style = {
+            color: '#fa923f',
+            textDecoration: 'underline'
+        }
+
         return (
             <div className="navigation-bar" >
                 <header>
@@ -18,39 +23,23 @@ class NavBar extends Component {
                         <ul className="nav-bar" >
                             <li> <NavLink to="/login"
                                 exact activeClassName="active-page"
-                                activeStyle={
-                                    {
-                                        color: '#fa923f',
-                                        textDecoration: 'underline'
-                                    }
-                                } > login </NavLink>
+                                activeStyle={ style } > login </NavLink>
+                            </li>
+                            <li> <NavLink to="/signup"
+                                exact activeClassName="active-page"
+                                activeStyle={ style }> Singup </NavLink>
                             </li>
                             <li > <NavLink to="/Resource"
                                 exact activeClassName="active-page"
-                                activeStyle={
-                                    {
-                                        color: '#fa923f',
-                                        textDecoration: 'underline'
-                                    }
-                                } > Resource </NavLink>
+                                activeStyle={ style } > Resource </NavLink>
                             </li>
                             <li> <NavLink to="/Project"
                                 exact activeClassName="active-page"
-                                activeStyle={
-                                    {
-                                        color: '#fa923f',
-                                        textDecoration: 'underline'
-                                    }
-                                } > Project </NavLink>
+                                activeStyle={ style } > Project </NavLink>
                             </li>
                             <li> <NavLink to="/Formula"
                                 exact activeClassName="active-page"
-                                activeStyle={
-                                    {
-                                        color: '#fa923f',
-                                        textDecoration: 'underline'
-                                    }
-                                } > Formula </NavLink>
+                                activeStyle={ style } > Formula </NavLink>
                             </li>
                         </ul>
                     </nav>
