@@ -6,6 +6,9 @@ import com.itlize.ResourceApp.domain.Data;
 
 public interface AppService {
 	
+//	Create
+	Data saveDataToProject(Data data);
+//	Read
 	List<Data> generateRows(int projectId);
 
 }

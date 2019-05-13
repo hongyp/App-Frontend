@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.itlize.ResourceApp.domain.Feature;
 import com.itlize.ResourceApp.domain.FeatureValue;
 import com.itlize.ResourceApp.domain.Resource;
+import com.itlize.ResourceApp.DAO.FeatureDAO;
+import com.itlize.ResourceApp.DAO.ResourceDAO;
 import com.itlize.ResourceApp.domain.Data;
 import com.itlize.ResourceApp.service.AppService;
 import com.itlize.ResourceApp.service.FeatureService;
@@ -20,7 +22,11 @@ import com.itlize.ResourceApp.service.ResourceService;
 @Service
 @Transactional
 public class AppServiceImpl implements AppService {
-	
+
+	@Autowired
+	ResourceDAO resourceDAO;
+	@Autowired
+	FeatureDAO featureDAO;
 	@Autowired
 	ResourceService resourceService;
 	@Autowired
@@ -28,6 +34,25 @@ public class AppServiceImpl implements AppService {
 	@Autowired
 	FeatureValueService featureValueService;
 
+//	Create
+	@Override
+	public Data saveDataToProject(Data data) {
+		// TODO Auto-generated method stub
+		Data savedData = new Data();
+		savedData.setProjectId(data.getProjectId());
+		Resource resource = new Resource(data.getResource().getCode(), data.getResource().getName(),
+				data.getProjectId());
+		savedData.setResource(resourceService.saveResourceForProject(resource, data.getProjectId()));
+		List<Feature> feature_list = data.getFeatures();
+		for (Feature feature : feature_list) {
+//			user existed feature and add responding value to Value tabel
+			featureValueService.saveValueOfFeature(feature.getContent(), data.getProjectId(), resource.getId(),
+					feature.getId());
+		}
+		return savedData;
+	}
+
+//	Read
 	@Override
 	public List<Data> generateRows(int projectId) {
 		// TODO Auto-generated method stub
@@ -39,7 +64,8 @@ public class AppServiceImpl implements AppService {
 			List<Feature> newFeatureList = new ArrayList<>();
 			for (Feature feature : features) {
 				int featureId = feature.getId();
-				FeatureValue featureVal = featureValueService.getFeatureValuesByThreeId(projectId, resourceId, featureId);
+				FeatureValue featureVal = featureValueService.getFeatureValuesByThreeId(projectId, resourceId,
+						featureId);
 				if (featureVal == null) {
 					feature.setContent(null);
 				} else {

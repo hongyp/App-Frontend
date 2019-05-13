@@ -11,6 +11,7 @@ public class Data {
 	
 	public Data() {
 		super();
+		this.features = new ArrayList<Feature>();
 	}
 	
 	public Data(int projectId, Resource resource) {

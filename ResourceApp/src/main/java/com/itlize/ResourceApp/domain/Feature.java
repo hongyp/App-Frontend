@@ -10,6 +10,18 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Feature")
 public class Feature {
+	
+	public Feature() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Feature(String name, String type, String content, int projectId) {
+		// TODO Auto-generated constructor stub
+		this.name = name;
+		this.type = type;
+		this.content = content;
+		this.projectId = projectId;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,6 +10,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Resource")
 public class Resource {
+	
+	public Resource() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Resource(String code, String name, int projectId) {
+		// TODO Auto-generated constructor stub
+		this.code = code;
+		this.name = name;
+		this.projectId = projectId;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

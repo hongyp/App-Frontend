@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itlize.ResourceApp.domain.Feature;
 import com.itlize.ResourceApp.domain.Project;
 import com.itlize.ResourceApp.service.FeatureService;
-import com.itlize.ResourceApp.service.FeatureValueService;
 
 @RestController
 @EnableAutoConfiguration
@@ -21,17 +20,22 @@ public class FeatureController {
 	
 	@Autowired
 	FeatureService featureService;
-	@Autowired
-	FeatureValueService featureValueService;
 	
-	@RequestMapping(value = "/feature/{id}", method = RequestMethod.POST)
+//	Create API
+	@RequestMapping(value = "/project/saveFeature", method = RequestMethod.POST)
+	public Feature saveFeatureForProject(@RequestBody Feature feature) {
+		System.out.println(feature);
+		return featureService.saveFeatureForProject(feature, feature.getProjectId());
+	}
+	
+//	Get API
+	@RequestMapping(value = "/getFeature/{id}", method = RequestMethod.POST)
 	public Feature getFeatureById(@RequestBody Feature feature) {
 		return featureService.getFeatureById(feature.getId());
 	}
 	
-	@RequestMapping(value = "/project/{projectId}/features", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/{projectId}/getAllFeatures", method = RequestMethod.GET)
 	public List<Feature> getFeatruesByResIdProId(@PathVariable("projectId") Project project) {
-//		featureValueService.getFeatureValuesByThreeId(1, 1, 100);
 		return featureService.getFeatruesByProjectId(project.getId());
 	}
 
