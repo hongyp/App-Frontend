@@ -1,4 +1,4 @@
-package com.itlize.resourceBackend.ResourceApp;
+package com.itlize.ResourceApp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

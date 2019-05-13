@@ -1,4 +1,4 @@
-package com.itlize.resourceBackend.ResourceApp;
+package com.itlize.ResourceApp;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
