@@ -89,4 +89,20 @@ public class AppServiceImpl implements AppService {
 		return rst;
 	}
 
+//	Update
+	@Override
+	public Data updateRow(Data data) {
+		// TODO Auto-generated method stub
+		Data updatedData = new Data();
+		Resource resource = data.getResource();
+		updatedData.setResource(resourceService.updateResourceOfProject(resource));
+		List<Feature> feature_list = data.getFeatures();
+		for (Feature feature : feature_list) {
+			updatedData.getFeatures().add(featureService.updateFeatureOfProject(feature));
+			featureValueService.updateFeatureValue(feature.getContent(), data.getProjectId(), 
+											resource.getId(), feature.getId());
+		}
+		return updatedData;
+	}
+
 }

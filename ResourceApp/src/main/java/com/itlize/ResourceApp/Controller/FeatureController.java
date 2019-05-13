@@ -38,5 +38,11 @@ public class FeatureController {
 	public List<Feature> getFeatruesByResIdProId(@PathVariable("projectId") Project project) {
 		return featureService.getFeatruesByProjectId(project.getId());
 	}
+	
+//	Update API
+	@RequestMapping(value = "/updateFeature", method = RequestMethod.PUT)
+	public Feature updateFeature(@RequestBody Feature feature) {
+		return featureService.updateFeatureOfProject(feature);
+	}
 
 }

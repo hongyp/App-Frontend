@@ -15,7 +15,7 @@ import com.itlize.ResourceApp.service.FeatureService;
 @Service
 @Transactional
 public class FeatureServiceImpl implements FeatureService {
-	
+
 	@Autowired
 	FeatureDAO featureDAO;
 
@@ -29,7 +29,7 @@ public class FeatureServiceImpl implements FeatureService {
 		featureDAO.save(feature);
 		return feature;
 	}
-	
+
 //	Read
 	@Override
 	public Feature getFeatureById(int id) {
@@ -41,6 +41,21 @@ public class FeatureServiceImpl implements FeatureService {
 	public List<Feature> getFeatruesByProjectId(int projectId) {
 		// TODO Auto-generated method stub
 		return featureDAO.findByProjectId(projectId);
+	}
+
+//	Update
+	@Override
+	public Feature updateFeatureOfProject(Feature feature) {
+		// TODO Auto-generated method stub
+		Feature featureToUpdate = featureDAO.getOne(feature.getId());
+		if (!featureToUpdate.getName().equals(feature.getName()) 
+				&& featureDAO.existsByNameForProject(feature.getName(), feature.getProjectId())) {
+			throw new InfoConflictException("Feature name of the project");
+		}
+		featureToUpdate.setName(feature.getName());
+		featureToUpdate.setType(feature.getType());
+		featureToUpdate.setContent(feature.getContent());
+		return featureDAO.save(featureToUpdate);
 	}
 
 }
