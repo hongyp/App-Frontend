@@ -48,7 +48,8 @@ public class ResourceServiceImpl implements ResourceService {
 	public Resource updateResourceOfProject(Resource resource) {
 		// TODO Auto-generated method stub
 		Resource resourceToUpdate = resourceDAO.getOne(resource.getId());
-		if (resourceDAO.existsByCodeForProject(resource.getCode(), resource.getProjectId())) {
+		if (!resourceToUpdate.getCode().equals(resource.getCode()) 
+				&& resourceDAO.existsByCodeForProject(resource.getCode(), resource.getProjectId())) {
 			throw new InfoConflictException("Resource code of this project");
 		}
 		resourceToUpdate.setCode(resource.getCode());

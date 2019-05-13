@@ -7,8 +7,10 @@ import com.itlize.ResourceApp.domain.Data;
 public interface AppService {
 	
 //	Create
-	Data saveDataToProject(Data data);
+	public Data saveDataToProject(Data data);
 //	Read
-	List<Data> generateRows(int projectId);
+	public List<Data> generateRows(int projectId);
+//	Update
+	public Data updateRow(Data data);
 
 }

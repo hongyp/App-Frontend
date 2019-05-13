@@ -60,5 +60,15 @@ public class FeatureValueServiceImpl implements FeatureValueService {
 		// can be null
 		return value;
 	}
+	
+//	Update
+	@Override
+	public FeatureValue updateFeatureValue(String newVal, int projectId, int resourceId, int featureId) {
+		// TODO Auto-generated method stub
+		FeatureValue featureValueToUpdate = featureValueDAO.findByProIdResIdFeaId(projectId, resourceId, featureId);
+		featureValueToUpdate.setValue(newVal);
+		featureValueDAO.save(featureValueToUpdate);
+		return null;
+	}
 
 }

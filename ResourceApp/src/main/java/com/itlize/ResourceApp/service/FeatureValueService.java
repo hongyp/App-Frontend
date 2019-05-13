@@ -13,5 +13,7 @@ public interface FeatureValueService {
 	public FeatureValue getFeatureValueById(int id);
 	public List<FeatureValue> getFeatureValuesByProjectId(int projectId);
 	public FeatureValue getFeatureValuesByThreeId(int projectId, int resourceId, int featureId);
+//	Update
+	public FeatureValue updateFeatureValue(String newVal, int projectId, int resourceId, int featureId);
 
 }

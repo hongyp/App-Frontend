@@ -33,4 +33,10 @@ public class AppController  {
 		return appService.generateRows(project.getId());
 	}
 	
+//	Update API
+	@RequestMapping(value = "/updateData", method = RequestMethod.PUT)
+	public Data updateData(@RequestBody Data data) {
+		return appService.updateRow(data);
+	}
+	
 }

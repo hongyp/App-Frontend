@@ -2,12 +2,13 @@ package com.itlize.ResourceApp.DAO;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.itlize.ResourceApp.domain.FeatureValue;
 
-public interface FeatureValueDAO extends CrudRepository<FeatureValue, Integer> {
+public interface FeatureValueDAO extends CrudRepository<FeatureValue, Integer>, JpaRepository<FeatureValue, Integer> {
 	
 	FeatureValue findById(int id);
 	List<FeatureValue> findByProjectId(int projectId);
