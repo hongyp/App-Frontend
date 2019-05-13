@@ -16,19 +16,29 @@ public class ProjectController {
 	
 	@Autowired
 	ProjectService projectService;
+	
+//	Create API
+	@RequestMapping(value = "/saveProject", method = RequestMethod.POST)
+	public Project saveProject(@RequestBody Project project) {
+		return projectService.saveProject(project);
+	}
 
-	@RequestMapping(value = "/project", method = RequestMethod.POST)
+	
+//	Read API
+	@RequestMapping(value = "/getProject", method = RequestMethod.POST)
 	public Project getProjectById(@RequestBody Project project) {
 		return projectService.getProjectById(project.getId());
 	}
 	
-	@RequestMapping(value = "/projects", method = RequestMethod.GET)
+	@RequestMapping(value = "/getAllProjects", method = RequestMethod.GET)
 	public Iterable<Project> getAllProjects() {
 		Iterable<Project> list = projectService.getProjectList();
-		for (Project each : list) {
-			System.out.println(each.getName());
-		}
 		return list;
 	}
 
+//	Update API
+	@RequestMapping(value = "/updateProject", method = RequestMethod.PUT)
+	public Project updateProject(@RequestBody Project project) {
+		return projectService.updateProject(project);
+	}
 }

@@ -11,10 +11,10 @@ public interface FeatureValueDAO extends CrudRepository<FeatureValue, Integer> {
 	
 	FeatureValue findById(int id);
 	List<FeatureValue> findByProjectId(int projectId);
+	
+	@Query("SELECT CASE WHEN COUNT(f) > 0 THEN 'true' ELSE 'false' END FROM FeatureValue f WHERE f.projectId = ?1 AND f.resourceId = ?2 AND f.featureId = ?3")
+	boolean existsByValue(int projectId, int resourceId, int featureId);
 
 	@Query("SELECT u FROM FeatureValue u WHERE u.projectId = ?1 AND u.resourceId = ?2 AND u.featureId = ?3")
 	FeatureValue findByProIdResIdFeaId(int projectId, int resourceId, int featureId);
-	
-//	@Query("SELECT CASE WHEN COUNT(u) > 0 THEN 'true' ELSE 'false' END FROM Users u WHERE u.email = ?1")
-//	boolean exisasdtsByEmaasdfil(String email);
 }
