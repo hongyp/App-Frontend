@@ -28,3 +28,9 @@
     color: #fa923f;
     cursor: pointer;
 }
+
+.ErrorMessage {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+}

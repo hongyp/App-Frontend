@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axiosBackend from '../../axios/axios-app'
 
 import classes from './Login.module.css'
 import Input from './Input/Input.js'
@@ -10,11 +11,11 @@ class Login extends Component {
 
     state = {
         loginForm: {
-            username: {
+            email: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Username'
+                    placeholder: 'Username: email@email.com'
                 },
                 value: '',
                 validation: {
@@ -39,19 +40,29 @@ class Login extends Component {
             }
         },
         formIsValid: false,
-        loading: false
+        loading: false,
+        errInfo: null
     }
 
     submitHandler = (event) => {
-        this.setState({loading: true});
+        // Important!!! Without preventing default, btn will rediret to current page
+        // The preventDefault() method will prevent the link above from following the URL
+        event.preventDefault();
+        this.setState({ loading: true });
         const formData = {};
         for (let inputIdentifier in this.state.loginForm) {
             formData[inputIdentifier] = this.state.loginForm[inputIdentifier].value
         }
-        console.log(formData)
-        // debugger;
-        // Do http request here
-        this.props.history.push('/Resource');
+        // console.log(formData)
+        axiosBackend.post( '/login', formData )
+            .then( response => {
+                // console.log(response);
+                this.props.history.push('/resource');
+            } )
+            .catch( error => {
+                console.log("UNAUTHORIZATION : " + error);
+                this.setState({errInfo: "Please Enter valid username and password"});
+            } );
     }
 
     checkValidity = (value, validation) => {
@@ -96,7 +107,7 @@ class Login extends Component {
         for (let identifier in updateForm) {
             formIsValid = updateForm[identifier].valid && formIsValid;
         }
-        this.setState({loginForm: updateForm, formIsValid: formIsValid});
+        this.setState({ loginForm: updateForm, formIsValid: formIsValid });
     }
 
     signUpHandler = () => {
@@ -120,16 +131,17 @@ class Login extends Component {
         let form = (
             <form onSubmit={this.submitHandler}>
                 {formElementsArray.map(formElement => (
-                    <Input 
-                    key={formElement.id}
-                    label={formElement.id}
-                    elementType={formElement.config.elementType}
-                    elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value}
-                    shouldValidate={formElement.config.validation}
-                    invalid={!formElement.config.valid}
-                    touched={formElement.config.touched}
-                    changed={(event) => this.inputChangeHandler(event, formElement.id)}
+                    <Input
+                        key={formElement.id}
+                        label={formElement.id}
+                        elementType={formElement.config.elementType}
+                        elementConfig={formElement.config.elementConfig}
+                        value={formElement.config.value}
+                        shouldValidate={formElement.config.validation}
+                        invalid={!formElement.config.valid}
+                        touched={formElement.config.touched}
+                        changed={(event) => this.inputChangeHandler(event, formElement.id)}
+                        errorInfo={this.state.errInfo}
                     />
                 ))}
                 <Button btnType="Success" disabled={!this.state.formIsValid}>Login</Button>
@@ -137,10 +149,13 @@ class Login extends Component {
         )
 
         return (
+            <>
             <div className={classes.LoginForm}>
                 <img src={loginImg} className={classes.Img} alt="Smiley face"></img>
-
+                <div className={classes.ErrorMessage}>{this.state.errInfo}</div>
                 {form}
+                {/* Without event.preventDefault */}
+                {/* <Button type="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.submitHandler}>Login</Button> */}
 
                 <div className={classes.FormBottom}>
                     <div className={[classes.BottomBtn].join(' ')}>
@@ -151,6 +166,7 @@ class Login extends Component {
                     <div onClick={this.resetPasswordHandler}>Forgot password?</div>
                 </div>
             </div>
+            </>
         );
     }
 
