@@ -2,6 +2,7 @@ package com.itlize.ResourceApp.Controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,6 +13,7 @@ import com.itlize.ResourceApp.exception.UserNotFoundException;
 
 // Tag for handle the exceptions globally
 @RestControllerAdvice
+@CrossOrigin(origins="http://localhost:3000")
 public class WebExceptionController {
 
 	@ExceptionHandler(value = UserNotFoundException.class)
@@ -35,7 +37,7 @@ public class WebExceptionController {
 	
 	@ExceptionHandler(value = AuthenticationException.class)
 	public ResponseEntity<Object> failedAuthenticaiton(AuthenticationException exception) {
-		return response(HttpStatus.NOT_FOUND, exception);
+		return response(HttpStatus.UNAUTHORIZED, exception);
 	}
 	
 	public ResponseEntity<Object> response(HttpStatus status, Exception exception) {
