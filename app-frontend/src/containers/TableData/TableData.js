@@ -46,12 +46,12 @@ class TableData extends Component {
                 <div id="main">
                     <button className="openbtn" onClick={this.showNav}>&#9776;</button>
                     <Switch>
-                        {this.state.auth ? < Route path="/Resource" component={ResourcePage} /> : null}
+                        {/* {this.state.auth ? < Route path="/Resource" component={ResourcePage} /> : null} */}
                         <Route path="/login" component={LoginPage} />
                         <Route path="/signup" component={SignupPage} />
-                        <Route path="/Resource" component={ResourcePage} />
-                        <Route path="/Project" component={ProjectPage} />
-                        <Route path="/Formula" component={FormulaPage} />
+                        <Route path="/resource" component={ResourcePage} />
+                        <Route path="/project" component={ProjectPage} />
+                        <Route path="/formula" component={FormulaPage} />
                         <Route render={() => <h1> Not found!!! </h1>} />
                     </Switch>
                 </div>

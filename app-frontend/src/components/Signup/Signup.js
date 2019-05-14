@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from '../../axios/axios-app'
 
 import classes from './Signup.module.css'
 import Input from '../Login/Input/Input.js'
@@ -10,51 +11,11 @@ class SignUp extends Component {
 
     state = {
         signupForm: {
-            // firstName: {
-            //     elementType: 'input',
-            //     elementConfig: {
-            //         type: 'text',
-            //         placeholder: 'First Name'
-            //     },
-            //     valid: false,
-            //     validation: {
-            //         required: true,
-            //     },
-            //     value: '',
-            //     touched: false
-            // },
-            // lastName: {
-            //     elementType: 'input',
-            //     elementConfig: {
-            //         type: 'text',
-            //         placeholder: 'First Name'
-            //     },
-            //     valid: false,
-            //     validation: {
-            //         required: true,
-            //     },
-            //     value: '',
-            //     touched: false
-            // },
-            email: {
+            firstName: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Email'
-                },
-                valid: false,
-                validation: {
-                    required: true,
-                    isEmail: true
-                },
-                value: '',
-                touched: false
-            }, 
-            password: {
-                elementType: 'input',
-                elementConfig: {
-                    type: 'text',
-                    placeholder: 'Password'
+                    placeholder: 'First Name'
                 },
                 valid: false,
                 validation: {
@@ -63,11 +24,38 @@ class SignUp extends Component {
                 value: '',
                 touched: false
             },
-            confirmPassword: {
+            lastName: {
                 elementType: 'input',
                 elementConfig: {
                     type: 'text',
-                    placeholder: 'Confirm Password'
+                    placeholder: 'Last Name'
+                },
+                valid: false,
+                validation: {
+                    required: true
+                },
+                value: '',
+                touched: false
+            },
+            email: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Email(Username): email@email.com'
+                },
+                valid: false,
+                validation: {
+                    required: true,
+                    isEmail: true
+                },
+                value: '',
+                touched: false
+            },
+            password: {
+                elementType: 'input',
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Password: At least 6 charactors'
                 },
                 valid: false,
                 validation: {
@@ -78,7 +66,8 @@ class SignUp extends Component {
             }
         },
         formIsValid: false,
-        loading: false
+        loading: false,
+        errorInfo: null
     }
 
     checkValidity = (value, validation) => {
@@ -123,20 +112,30 @@ class SignUp extends Component {
         for (let identifier in updateForm) {
             formIsValid = updateForm[identifier].valid && formIsValid;
         }
-        this.setState({signupForm: updateForm, formIsValid: formIsValid});
+        this.setState({ signupForm: updateForm, formIsValid: formIsValid });
     }
 
     submitHandler = (event) => {
-        this.setState({loading: true});
+        event.preventDefault();
+        this.setState({ loading: true });
         const formData = {};
         for (let inputIdentifier in this.state.signupForm) {
-            formData[inputIdentifier] = this.state.signupForm[inputIdentifier]
+            formData[inputIdentifier] = this.state.signupForm[inputIdentifier].value
         }
         console.log(formData)
         // do http request here
-        this.props.history.push('/login')
+        axios.post('/signup', formData)
+            .then(response => {
+                // console.log(response);
+                this.props.history.push('/login');
+            })
+            .catch(error => {
+                console.log("CONFLICT" + error);
+                console.log("Email(Username) already exist");
+                this.setState({errorInfo: "Please fill the form"})
+            })
     }
-    
+
     render() {
 
         const formElementsArray = [];
@@ -146,11 +145,11 @@ class SignUp extends Component {
                 config: this.state.signupForm[key]
             })
         }
-        
+
         let form = (
             <form onSubmit={this.submitHandler}>
                 {formElementsArray.map(formElement => (
-                    <Input 
+                    <Input
                         key={formElement.id}
                         // label={formElement.id}
                         elementType={formElement.config.elementType}
@@ -160,15 +159,17 @@ class SignUp extends Component {
                         shouldValidation={formElement.validation}
                         touched={formElement.touched}
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
+                        errorInfo={this.state.errorInfo}
                     />
                 ))}
-                <Button btnType='Success' disabled={!this.state.formIsValid}>Sign up</Button>
+                <Button btnType='Success' disabled={!this.state.formIsValid} >Sign up</Button>
             </form>
         )
 
         return (
             <div className={classes.SignupForm}>
                 <img src={signupImg} className={classes.Img} alt="Smiley face"></img>
+                <div className={classes.ErrorMessage}>{this.state.errInfo}</div>
                 {form}
             </div>
         );

@@ -29,15 +29,15 @@ class NavBar extends Component {
                                 exact activeClassName="active-page"
                                 activeStyle={ style }> Singup </NavLink>
                             </li>
-                            <li > <NavLink to="/Resource"
+                            <li > <NavLink to="/resource"
                                 exact activeClassName="active-page"
                                 activeStyle={ style } > Resource </NavLink>
                             </li>
-                            <li> <NavLink to="/Project"
+                            <li> <NavLink to="/project"
                                 exact activeClassName="active-page"
                                 activeStyle={ style } > Project </NavLink>
                             </li>
-                            <li> <NavLink to="/Formula"
+                            <li> <NavLink to="/formula"
                                 exact activeClassName="active-page"
                                 activeStyle={ style } > Formula </NavLink>
                             </li>

@@ -8,7 +8,7 @@ import User from './User/User.js'
 class Headers extends Component {
 
     backToLogin = () => {
-        return <Redirect to="/" />
+        return <Redirect to="/" />;
     }
 
     render() {
@@ -28,4 +28,4 @@ class Headers extends Component {
 
 }
 
-export default Headers
+export default Headers;
