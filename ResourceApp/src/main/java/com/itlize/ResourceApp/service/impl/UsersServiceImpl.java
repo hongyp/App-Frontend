@@ -9,7 +9,6 @@ import com.itlize.ResourceApp.DAO.UsersDAO;
 import com.itlize.ResourceApp.domain.Users;
 import com.itlize.ResourceApp.exception.AuthenticationException;
 import com.itlize.ResourceApp.exception.InfoConflictException;
-import com.itlize.ResourceApp.exception.UserNotFoundException;
 import com.itlize.ResourceApp.service.UsersService;
 
 @Service
@@ -34,7 +33,8 @@ public class UsersServiceImpl implements UsersService {
 		// TODO Auto-generated method stub
 		boolean userExists = usersDAO.existsByEmail(email);
 		if (!userExists) {
-			throw new UserNotFoundException(email);
+//			throw new UserNotFoundException(email);
+			throw new AuthenticationException();
 		}
 		return usersDAO.findByEmail(email);
 	}
