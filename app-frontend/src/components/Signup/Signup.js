@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import axios from '../../axios/axios-app'
 
 import classes from './Signup.module.css'
-import Input from '../Login/Input/Input.js'
-import Button from '../Login/Button/Button.js'
+import Input from '../Elements/Input/Input.js'
+import Button from '../Elements/Button/Button.js'
 
 import signupImg from '../../asset/signup.png'
 

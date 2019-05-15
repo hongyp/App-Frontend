@@ -1,0 +1,34 @@
+:root {
+    --Cell-padding: 8px 12px 8px 12px;
+}
+
+.Container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.TopBar {
+    background-color: rgb(138, 138, 137);
+    padding: var(--Cell-padding);
+}
+
+.Table {
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(218, 217, 217);
+}
+
+.Columns {
+    display: flex;
+}
+
+.Header, .Column {
+    padding: var(--Cell-padding);
+}
+
+.Header {
+    background-color: rgb(228, 223, 223);
+    text-align: center;
+    font-weight: bold;
+}
