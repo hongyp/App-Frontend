@@ -1,0 +1,26 @@
+.Container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.UserLogo {
+    /* cover the z-index:1 of popup */
+    z-index: 2;
+}
+
+.UserLogo:hover {
+    cursor: pointer;
+}
+
+.Title {
+    /* vertical center */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* content in the bottom */
+    align-self: flex-end;
+    align-content: center;
+    padding: 0 30px 0 30px;
+    font-size: 120%;
+    font-weight: bold;
+}

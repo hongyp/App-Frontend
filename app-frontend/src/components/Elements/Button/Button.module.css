@@ -33,3 +33,14 @@
 .Normal {
     color: white;
 }
+
+.Popbtn {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    outline: none;
+    cursor: pointer;
+    font: inherit;
+    width: 100%;
+    padding: 7px 0 7px 0;
+    font-weight: bold;
+}

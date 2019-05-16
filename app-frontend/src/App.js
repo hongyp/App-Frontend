@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom'
-
-// import logo from './logo.svg';
+import { library } from '@fortawesome/fontawesome-svg-core'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStroopwafel, faSearch, faPlus, faUserCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 import TableData from './containers/TableData/TableData.js'
-// import './App.css';
+
+library.add(faStroopwafel, faSearch, faPlus, faUserCircle, faQuestionCircle)
 
 class App extends Component {
 
