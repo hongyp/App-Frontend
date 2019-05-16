@@ -67,8 +67,7 @@ public class FeatureValueServiceImpl implements FeatureValueService {
 		// TODO Auto-generated method stub
 		FeatureValue featureValueToUpdate = featureValueDAO.findByProIdResIdFeaId(projectId, resourceId, featureId);
 		featureValueToUpdate.setValue(newVal);
-		featureValueDAO.save(featureValueToUpdate);
-		return null;
+		return featureValueDAO.save(featureValueToUpdate);
 	}
 
 }

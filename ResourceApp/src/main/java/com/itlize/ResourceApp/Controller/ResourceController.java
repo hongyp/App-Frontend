@@ -2,6 +2,7 @@ package com.itlize.ResourceApp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.itlize.ResourceApp.service.ResourceService;
 
 @RestController
 @EnableAutoConfiguration
+@CrossOrigin(origins="http://localhost:3000")
 public class ResourceController {
 	
 	@Autowired
@@ -24,7 +26,6 @@ public class ResourceController {
 	public Resource saveResourceForProject(@RequestBody Resource resource) {
 		return resourceService.saveResourceForProject(resource, resource.getProjectId());
 	}
-	
 	
 //	Read API
 	@RequestMapping(value = "/resource", method = RequestMethod.POST)
