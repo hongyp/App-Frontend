@@ -13,7 +13,7 @@ const cell = (props) => {
     }
 
     return (
-        <div style={style} className={inputClasses.join(' ')} onClick={props.clicked}>
+        <div style={style} className={inputClasses.join(' ')} onDoubleClick={props.editable}>
             {props.value}
         </div>
     );

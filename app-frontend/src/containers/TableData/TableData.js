@@ -5,7 +5,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import Aux from '../../hoc/Aux.js'
 
 import './TableData.css'
-import HeaderPart from '../../components/Headers/Headers.js'
+import HeaderPart from '../../components/Header/Header.js'
 import ResourcePage from '../../components/Resource/Resource.js'
 import ProjectPage from '../../components/Project/Project.js'
 import FormulaPage from '../../components/Formula/Formula.js'
@@ -25,8 +25,8 @@ class TableData extends Component {
             document.getElementById("mySidebar").style.width = "0";
             document.getElementById("main").style.marginLeft = "0";
         } else {
-            document.getElementById("mySidebar").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
+            document.getElementById("mySidebar").style.width = "20%";
+            document.getElementById("main").style.marginLeft = "20%";
         }
         this.setState({
             showSideBar: !showSideBar

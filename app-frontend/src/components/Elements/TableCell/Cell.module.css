@@ -1,13 +1,16 @@
 :root {
     --Cell-padding: 8px 12px 8px 12px;
+    --Header-font-size: 120%;
 }
 
 .Cell {
     padding: var(--Cell-padding);
+    width: 100px;
 }
 
 .Header {
     background-color: rgb(228, 223, 223);
     text-align: center;
     font-weight: bold;
+    font-size: var(--Header-font-size);
 }
