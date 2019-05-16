@@ -2,6 +2,7 @@ package com.itlize.ResourceApp.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.itlize.ResourceApp.service.FeatureValueService;
 
 @RestController
 @EnableAutoConfiguration
+@CrossOrigin(origins="http://localhost:3000")
 public class FeatureValueController {
 
 	@Autowired
@@ -35,6 +37,13 @@ public class FeatureValueController {
 													@PathVariable("resourceId")int resourceId, 
 													@PathVariable("featureId")int featureId) {
 		return featureValueService.getFeatureValuesByThreeId(projectId, resourceId, featureId);
+	}
+	
+//	Update API
+	@RequestMapping(value = "/updateFeatureValue", method = RequestMethod.PUT)
+	public FeatureValue updateFeatureValue(@RequestBody FeatureValue featureValue) {
+		 return featureValueService.updateFeatureValue(featureValue.getValue(), featureValue.getProjectId(), 
+														featureValue.getResourceId(), featureValue.getFeatureId());
 	}
 	
 }
