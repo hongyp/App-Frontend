@@ -18,10 +18,12 @@ class User extends Component {
 
     profileHandler = () => {
         console.log("btn of popup")
+        this.popupHandler()
     }
 
     logoutHandler = () => {
         console.log("btn of logout")
+        this.popupHandler()
     }
 
     render() {

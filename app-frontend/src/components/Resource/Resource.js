@@ -128,8 +128,11 @@ class Resource extends Component {
         } else {
             tableWith = String(170 * colsNum) + 'px';
             tabaleContainerStyle = {
-                width: '100%',
-                overflow: 'scroll'
+                overflow: 'scroll',
+                borderStyle: 'solid',
+                borderWidth: '1px',
+                borderColor: 'rgb(138, 138, 137)',
+                paddingBottom: '12px'
             }
         }
         const style = {
@@ -138,7 +141,7 @@ class Resource extends Component {
 
         const table = (
             <div style={tabaleContainerStyle}>
-                <Table style={style} colWidth={colWidth} titles={titles} datas={datas} editable={this.editCellHandler} />
+                <Table style={style} colWidth={colWidth} titles={titles} datas={datas} isEditable={false} editable={this.editCellHandler} />
             </div>
         );
 

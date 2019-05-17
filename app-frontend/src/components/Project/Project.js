@@ -168,6 +168,7 @@ class Project extends Component {
         this.setState({RightResource: list})
                             // , Resource: {data:Resource}})
         this.cancelLeftAllHandler()
+        this.cancelRightAllHandler()
     }
 
     rightTrashHandler = (event) => {
@@ -192,7 +193,7 @@ class Project extends Component {
         for (let key in this.state.Resource.data) {
             leftResourceIdList.push(this.state.Resource.data[key].resource.id)
         }
-        this.setState({leftResourceIdList: leftResourceIdList})
+        this.setState({leftResourceIdList: leftResourceIdList, showOption: false})
     }
 
     cancelLeftAllHandler = (event) => {
@@ -200,6 +201,7 @@ class Project extends Component {
         for (var i = 0; i < objs.length; i++) {
             objs[i].checked = false
         }
+        this.setState({showOption: false})
     }
 
     cancelRightAllHandler = (event) => {
@@ -245,7 +247,7 @@ class Project extends Component {
                                 </button>
                                 {this.state.showOption && <div id="myDropdown" className={classes.dropdownContent}>
                                     <div onClick={this.selectLeftAllHandler}><a href="#row">Select all</a></div>
-                                    <div onClick={this.cancelAllHandler}><a href="#col">Clear selection</a></div>
+                                    <div onClick={this.cancelLeftAllHandler}><a href="#col">Clear selection</a></div>
                                 </div>}
                             </div>
                             <div className={classes.dropdown}>
@@ -254,7 +256,7 @@ class Project extends Component {
                                 </button>
                             </div>
                         </div>
-                        <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={datas} checkboxClick={this.checkBoxAddHandler} editable={this.editCellHandler} />
+                        <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={datas} checkboxClick={this.checkBoxAddHandler} isEditable={false} editable={this.editCellHandler} />
                     </div>
                     <div id="right-table" className={classes.Table}>
                         <div className={classes.TopBar}>
@@ -267,7 +269,7 @@ class Project extends Component {
                                 </button>
                             </div>
                         </div>
-                        <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={rightDatas} checkboxClick={this.checkBoxDeleteHandler} editable={this.editCellHandler} />
+                        <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={rightDatas} checkboxClick={this.checkBoxDeleteHandler} isEditable={false} editable={this.editCellHandler} />
                     </div>
                 </div>
             </div>
