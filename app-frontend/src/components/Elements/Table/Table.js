@@ -30,11 +30,24 @@ const table = (props) => {
                                 <Input elementType={'checkbox'} value={data.resource.id} index={index} checkboxClick={props.checkboxClick}/>
                             </div>
                         }
-                        <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, true)} width={colWidth} value={data.resource.name} />
-                        <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, false)} width={colWidth} value={data.resource.code} />
+                        { props.isEditable === true && 
+                            <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, true)} width={colWidth} value={data.resource.name} />
+                        }
+                        { props.isEditable === false && 
+                            <Cell width={colWidth} value={data.resource.name} />
+                        }
+                        { props.isEditable === true && 
+                            <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, false)} width={colWidth} value={data.resource.code} />
+                        }
+                        { props.isEditable === false && 
+                            <Cell width={colWidth} value={data.resource.code} />
+                        }
                         {/* Generate features */}
-                        {data.features.map((feature, indexF) => (
+                        { props.isEditable === true && data.features.map((feature, indexF) => (
                             <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, feature.id)} key={indexF} width={colWidth} value={feature.content} />
+                        ))}
+                        { props.isEditable === false && data.features.map((feature, indexF) => (
+                            <Cell key={indexF} width={colWidth} value={feature.content} />
                         ))}
                     </div>
                 )
