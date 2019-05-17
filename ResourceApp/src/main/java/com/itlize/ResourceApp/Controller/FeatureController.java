@@ -31,7 +31,7 @@ public class FeatureController {
 	}
 	
 //	Get API
-	@RequestMapping(value = "/getFeature/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/getFeature/{id}", method = RequestMethod.GET)
 	public Feature getFeatureById(@RequestBody Feature feature) {
 		return featureService.getFeatureById(feature.getId());
 	}
