@@ -68,6 +68,7 @@
 }
 
 .Label {
+    width: 100%;
     font-weight: bold;
     display: block;
     margin-bottom: 8px;

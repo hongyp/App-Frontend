@@ -4,6 +4,7 @@ import classes from './Project.module.css'
 import axios from '../../axios/axios-app'
 import Select from '../Elements/Selection/Selection'
 import Table from '../Elements/Table/Table'
+import ProjectPart from './LeftTable/LeftTable'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -229,35 +230,17 @@ class Project extends Component {
         }
 
         const rightDatas = [...this.state.RightResource]
-
         return (
             <div className={classes.Container}>
                 <div className="project-page">
                     <Select list={this.state.ProjectList} clicked={(e) => this.selectProjectHandlder(e)} />
                 </div>
                 <div className={classes.Tables}>
-                    <div id="left-table" className={classes.Table}>
-                        <div className={classes.TopBar}>
-                            <div className={classes.Title}>
-                                <span>Resource Catalog</span>
-                            </div>
-                            <div className={classes.dropdown}>
-                                <button onClick={(e) => this.optionHandler(e)} className={classes.Button}>
-                                    <FontAwesomeIcon color="rgb(255, 255, 255)" icon="list" />
-                                </button>
-                                {this.state.showOption && <div id="myDropdown" className={classes.dropdownContent}>
-                                    <div onClick={this.selectLeftAllHandler}><a href="#row">Select all</a></div>
-                                    <div onClick={this.cancelLeftAllHandler}><a href="#col">Clear selection</a></div>
-                                </div>}
-                            </div>
-                            <div className={classes.dropdown}>
-                                <button onClick={(e) => this.addToRightBtnHandler(e)} className={classes.Button}>
-                                    <FontAwesomeIcon color="rgb(255, 255, 255)" icon="arrow-alt-circle-right" />
-                                </button>
-                            </div>
-                        </div>
-                        <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={datas} checkboxClick={this.checkBoxAddHandler} isEditable={false} editable={this.editCellHandler} />
-                    </div>
+                    <ProjectPart header={"Resource Catalog"} optionHandler={this.optionHandler} selectLeftAllHandler={this.selectLeftAllHandler} cancelLeftAllHandler={this.cancelLeftAllHandler}
+                                    addToRightBtnHandler={this.addToRightBtnHandler} 
+                                    hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={datas}
+                                    checkBoxAddHandler={this.checkBoxAddHandler} showOption={this.state.showOption} isEditable={true}
+                                    editCellHandler={this.editCellHandler}/>
                     <div id="right-table" className={classes.Table}>
                         <div className={classes.TopBar}>
                             <div className={classes.Title}>

@@ -45,12 +45,14 @@ const input = (props) => {
     } else {
         style.push(classes.Input)
     }
-
+    
     return (
         <div className={style.join(' ')}>
             <label className={classes.Label}>{props.label}
                 {inputElement}
+                {props.hasCheckBox === true &&
                 <span className={classes.checkmark}></span>
+                }
             </label>
         </div>
     );

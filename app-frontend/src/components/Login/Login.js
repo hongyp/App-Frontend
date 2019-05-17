@@ -142,6 +142,7 @@ class Login extends Component {
                         touched={formElement.config.touched}
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
                         errorInfo={this.state.errInfo}
+                        hasCheckBox={false}
                     />
                 ))}
                 <Button btnType="Success" disabled={!this.state.formIsValid}>Login</Button>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import logo from '../../logo.svg';
+// import logo from '../../logo.svg';
+import logo from '../../asset/logo.png'
 import classes from './Header.module.css'
 import User from './User/User.js'
 
