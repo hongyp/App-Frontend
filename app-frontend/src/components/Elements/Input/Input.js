@@ -24,19 +24,34 @@ const input = (props) => {
                             onChange={props.changed}
                             />
             break;
+        case ('checkbox'):
+            inputElement = <input
+                            type="checkbox"
+                            value={props.value}
+                            onClick={(e) => props.checkboxClick(e, props.value, props.index)}
+                            />
+            break;
         default:
             inputElement = <input
                             className={inputClasses.join(' ')}
                             {...props.elementConfig}
                             value={props.value}
-                            onChange={props.changed}
                             />
     }
 
+    const style = []
+    if (props.hasCheckBox !== false) {
+        style.push(classes.CheckBoxContainer)
+    } else {
+        style.push(classes.Input)
+    }
+
     return (
-        <div className={classes.Input}>
-            <label className={classes.Label}>{props.label}</label>
-            {inputElement}
+        <div className={style.join(' ')}>
+            <label className={classes.Label}>{props.label}
+                {inputElement}
+                <span className={classes.checkmark}></span>
+            </label>
         </div>
     );
 }
