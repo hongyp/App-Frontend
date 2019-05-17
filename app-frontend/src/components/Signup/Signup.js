@@ -160,6 +160,7 @@ class SignUp extends Component {
                         touched={formElement.touched}
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
                         errorInfo={this.state.errorInfo}
+                        hasCheckBox={false}
                     />
                 ))}
                 <Button btnType='Success' disabled={!this.state.formIsValid} >Sign up</Button>

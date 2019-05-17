@@ -27,7 +27,7 @@ const table = (props) => {
                         {/* Generate first two columns */}
                         { props.hasCheckBox &&
                             <div>
-                                <Input elementType={'checkbox'} value={data.resource.id} index={index} checkboxClick={props.checkboxClick}/>
+                                <Input elementType={'checkbox'} value={data.resource.id} index={index} hasCheckBox={props.hasCheckBox} checkboxClick={props.checkboxClick}/>
                             </div>
                         }
                         { props.isEditable === true && 

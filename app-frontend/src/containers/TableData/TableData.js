@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import NavBar from '../../components/NavBar/NavBar';
+import NavBar from '../../components/NavBar/NavBar'
 
 import Aux from '../../hoc/Aux.js'
 
@@ -11,6 +11,7 @@ import ProjectPage from '../../components/Project/Project.js'
 import FormulaPage from '../../components/Formula/Formula.js'
 import LoginPage from '../../components/Login/Login.js'
 import SignupPage from '../../components/Signup/Signup.js'
+import EditPage from '../../components/Formula/Edit/Edit'
 
 class TableData extends Component {
 
@@ -52,6 +53,7 @@ class TableData extends Component {
                         <Route path="/resource" component={ResourcePage} />
                         <Route path="/project" component={ProjectPage} />
                         <Route path="/formula" component={FormulaPage} />
+                        <Route path="/edit" component={EditPage} />
                         <Route render={() => <h1> Not found!!! </h1>} />
                     </Switch>
                 </div>

@@ -55,10 +55,10 @@ class Resource extends Component {
         featureValue['resourceId'] = resourceId;
         featureValue['featureId'] = featureId;
         axios.put('/updateFeatureValue', featureValue)
-                .then(res => {
-                    console.log(res);
-                    console.log("successfully update value");
-                })
+            .then(res => {
+                console.log(res);
+                console.log("successfully update value");
+            })
     }
 
     editCellHandler = (event, projectId, resourceId, featureId, featureName, featureCode, isFeatureName) => {
@@ -66,7 +66,7 @@ class Resource extends Component {
         var curVal = element.innerHTML;
         element.innerHTML = "";
         var newObj = document.createElement("input");
-        newObj.className="edit";
+        newObj.className = "edit";
         newObj.value = curVal;
         element.appendChild(newObj);
         var padding = element.style.padding;
@@ -154,25 +154,18 @@ class Resource extends Component {
                     <div>
                         <span className={classes.Title}>Resource Catalog</span>
                     </div>
-                    <div>
-                        {/* <button className={classes.Button} type="submit" onClick={this.optionHandler}>
+                    <div className={classes.dropdown}>
+                        <button onClick={(e) => this.optionHandler(e)} className={classes.Button}>
                             <FontAwesomeIcon color="rgb(255, 255, 255)" icon="plus" />
-                        </button> */}
-                        {/* testing */}
-                        <div className={classes.dropdown}>
-                            <button onClick={(e) => this.optionHandler(e)} className={classes.Button}>
-                                <FontAwesomeIcon color="rgb(255, 255, 255)" icon="plus" />
-                            </button>
-                            {this.state.showOption && <div id="myDropdown" className={classes.dropdownContent}>
-                                <div onClick={this.addRowHandler}><a href="#row">Add row</a></div>
-                                <div onClick={this.addColHandler}><a href="#col">Add column</a></div>
-                                <div onClick={this.importCSVHandler}><a href="#csv">Import CSV</a></div>
-                            </div>}
-                        </div>
+                        </button>
+                        {this.state.showOption && <div id="myDropdown" className={classes.dropdownContent}>
+                            <div onClick={this.addRowHandler}><a href="#row">Add row</a></div>
+                            <div onClick={this.addColHandler}><a href="#col">Add column</a></div>
+                            <div onClick={this.importCSVHandler}><a href="#csv">Import CSV</a></div>
+                        </div>}
                     </div>
                 </div>
                 {table}
-                {/* <div onDoubleClick={(e) => this.editCellHandler(e, 'projectId', 'resourceId', featureId)}>小米笔记本电脑</div> */}
             </div>
         );
     }
