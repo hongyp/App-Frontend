@@ -3,6 +3,7 @@ import Aux from '../../../hoc/Aux'
 
 import classes from './Table.module.css'
 import Cell from '../TableCell/Cell'
+import Input from '../../Elements/Input/Input'
 
 const table = (props) => {
 
@@ -24,6 +25,11 @@ const table = (props) => {
                 {datas.map((data, index) => (
                     <div key={index} className={classes.Columns}>
                         {/* Generate first two columns */}
+                        { props.hasCheckBox &&
+                            <div>
+                                <Input elementType={'checkbox'} value={data.resource.id} index={index} checkboxClick={props.checkboxClick}/>
+                            </div>
+                        }
                         <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, true)} width={colWidth} value={data.resource.name} />
                         <Cell editable={(e) => props.editable(e, data.projectId, data.resource.id, '', data.resource.name, data.resource.code, false)} width={colWidth} value={data.resource.code} />
                         {/* Generate features */}

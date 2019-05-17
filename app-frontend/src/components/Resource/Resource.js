@@ -126,7 +126,7 @@ class Resource extends Component {
         if (colsNum < 5) {
             tableWith = '100%';
         } else {
-            tableWith = String(130 * colsNum) + 'px';
+            tableWith = String(170 * colsNum) + 'px';
             tabaleContainerStyle = {
                 width: '100%',
                 overflow: 'scroll'
