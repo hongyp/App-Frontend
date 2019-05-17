@@ -7,10 +7,10 @@ USE Resource_backend
 -- SELECT * FROM [dbo].[Project]
 -- GO
 
-SELECT * FROM [dbo].[Resource]
+-- SELECT * FROM [dbo].[Resource]
 -- GO
 
--- SELECT * FROM [dbo].[Feature]
+SELECT * FROM [dbo].[Feature]
 -- WHERE project_id = 1 AND resource_id = 1
 -- GROUP BY name
 -- GO
