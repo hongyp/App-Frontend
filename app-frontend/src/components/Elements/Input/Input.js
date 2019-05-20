@@ -45,7 +45,6 @@ const input = (props) => {
     } else {
         style.push(classes.Input)
     }
-    
     return (
         <div className={style.join(' ')}>
             <label className={classes.Label}>{props.label}
@@ -54,6 +53,9 @@ const input = (props) => {
                 <span className={classes.checkmark}></span>
                 }
             </label>
+                {/* {props.touched && 
+                    <div>{props.label} is invalid</div>
+                } */}
         </div>
     );
 }

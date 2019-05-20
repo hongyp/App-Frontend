@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import axios from '../../../axios/axios-app'
+import { connect } from 'react-redux'
+import { history } from '../../../_helpers/history'
 import classes from './Edit.module.css'
 import Cell from '../../Elements/TableCell/Cell'
 import Field from '../Field/Field'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { projectAction } from '../../../_actions';
 
 class Edit extends Component {
 
@@ -23,12 +26,25 @@ class Edit extends Component {
             })
     }
 
+    resetField(projectId) {
+        axios.get('/project/' + projectId + '/getAllFeatures')
+            .then(response => {
+                this.setState({
+                    CurrentProjectId: projectId,
+                    FeaturesList: response.data
+                })
+            })
+    }
+
     backToFormulaHandler = () => {
         // this.props.history.push('/formula')
     }
 
     submitHandler = () => {
-        console.log(this.state.selectedFeaturesIdList)
+        // console.log(this.state.selectedFeaturesIdList)
+        const { projectList, projectId } = this.props
+        this.props.dispatch(projectAction.showSelectedFeatures(this.state.selectedFeaturesIdList, projectList, projectId))
+
         var objs = document.getElementsByClassName('field')
         for (var index = 0; index < objs.length; index++) {
             var inputs = objs[index].getElementsByTagName('input')
@@ -46,6 +62,7 @@ class Edit extends Component {
                     console.log(error)
                 })
         }
+        history.push('/formula')
     }
 
     checkboxClick = (event, featureValue, featureId) => {
@@ -81,13 +98,19 @@ class Edit extends Component {
     addFieldHandler = (event) => {
         const fields = [...this.state.InputFields]
         fields.push(<div key={fields.length + 1} className={[classes.Field, 'field'].join(' ')}>
-                        <Field index={fields.length + 1} isFormula={false} rightTrashHandler={this.rightTrashHandler} changed={this.optionChangeHandler}/>
-                    </div>);
+            <Field index={fields.length + 1} isFormula={false} rightTrashHandler={this.rightTrashHandler} changed={this.optionChangeHandler} />
+        </div>);
         this.setState({ InputFields: fields })
     }
 
     render() {
-        console.log(this.state.FeaturesList)
+        const { projectId } = this.props
+        if (projectId !== undefined) {
+            if (projectId !== this.state.CurrentProjectId) {
+                this.resetField(projectId)
+            }
+        }
+        console.log(projectId)
         var features = [];
         if (this.state.FeaturesList) {
             features = [...this.state.FeaturesList]
@@ -95,40 +118,51 @@ class Edit extends Component {
         return (
             <>
                 <div className={classes.Container}>
-                    <div className={classes.Tables}>
-                        <div className={classes.LeftTable}>
-                            <div className={classes.InnerTable}>
-                                <Cell value={'Project Scope Field'} isHeader={true} />
-                                <div className={classes.HeaderContainer}>
-                                    {features.map((feature, index) => (
-                                        <Cell className={classes.Cell} key={index} value={feature.name} id={feature.id} isHeader={false} hasCheckbox={true} checkBoxValue={feature.id} checkboxClick={this.checkboxClick} />
-                                    ))}
+                    <div className={classes.TablesContainer}>
+                        <div className={classes.Tables}>
+                            <div className={classes.LeftTable}>
+                                <div className={classes.InnerTable}>
+                                    <Cell value={'Project Scope Field'} isHeader={true} />
+                                    <div className={classes.HeaderContainer}>
+                                        {features.map((feature, index) => (
+                                            <Cell className={classes.Cell} key={index} value={feature.name} id={feature.id} isHeader={false} hasCheckbox={true} checkBoxValue={feature.id} checkboxClick={this.checkboxClick} />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={classes.RightTable}>
+                                <div className={classes.InnerTable}>
+                                    <Cell value={'Quantity Survey Field'} isHeader={true} />
+                                </div>
+                                {/* <div id="fields" className={classes.Field}>
+                                <Field index={0} isFormula={true} rightTrashHandler={this.rightTrashHandler} changed={this.optionChangeHandler}/>
+                            </div> */}
+                                {this.state.InputFields}
+                                <div className={classes.RightTableBtn}>
+                                    Add Field&nbsp;
+                                <button onClick={(e) => this.addFieldHandler(e)} className={classes.Button}>
+                                        <FontAwesomeIcon color="rgb(255, 255, 255)" icon="plus" />
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <div className={classes.RightTable}>
-                            <div className={classes.InnerTable}>
-                                <Cell value={'Quantity Survey Field'} isHeader={true} />
-                            </div>
-                            {/* <div id="fields" className={classes.Field}>
-                                <Field index={0} isFormula={true} rightTrashHandler={this.rightTrashHandler} changed={this.optionChangeHandler}/>
-                            </div> */}
-                            {this.state.InputFields}
-                            <div className={classes.RightTableBtn}>
-                                Add Field&nbsp;
-                                <button onClick={(e) => this.addFieldHandler(e)} className={classes.Button}>
-                                    <FontAwesomeIcon color="rgb(255, 255, 255)" icon="plus" />
-                                </button>
-                            </div>
-                        </div>
+                        <div className={classes.TableBottom}>Bottom</div>
+                        {/* <button onClick={this.backToFormulaHandler}>Submit</button> */}
                     </div>
-                    <div>Bottom</div>
-                    {/* <button onClick={this.backToFormulaHandler}>Submit</button> */}
+                    <div className={classes.Bottom}>
+                        <button className={classes.SubmitButton} onClick={this.submitHandler}>Submit</button>
+                    </div>
                 </div>
-                <button onClick={this.submitHandler}>Submit</button>
             </>
         );
     }
 }
-
-export default Edit;
+function mapStateToProps(state) {
+    const { projectList, projectId } = state.project
+    return {
+        projectList, projectId
+    }
+}
+const connectedEdit = connect(mapStateToProps)(Edit)
+export default connectedEdit;
+// export default Edit;

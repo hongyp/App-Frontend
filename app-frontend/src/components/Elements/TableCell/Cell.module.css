@@ -4,7 +4,7 @@
 }
 
 .Cell {
-    padding: var(--Cell-padding);
+    padding: var(--Cell-padding) !important;
     /* width: 100px; */
 }
 

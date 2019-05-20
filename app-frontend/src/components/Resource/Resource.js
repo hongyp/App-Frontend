@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import axios from '../../axios/axios-app'
-
+import { connect } from 'react-redux'
 import classes from './Resource.module.css'
-import './Resource.css'
-// import Button from '../Elements/Button/Button'
 import Table from '../Elements/Table/Table'
 import Search from '../Elements/Search/Search'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,16 +9,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 class Resource extends Component {
 
     state = {
+        CurrentProjectId: 1,
+        PrevProectId: 1,
         Resource: null,
+        savedResource: null,
         errorInfo: null,
         showOption: false,
         loading: false,
     }
 
     componentDidMount() {
-        axios.get('/getProject/1')
+        axios.get('/getData/' + this.state.CurrentProjectId)
             .then(response => {
-                this.setState({ Resource: response })
+                this.setState({ Resource: response, savedResource: response })
             })
             .catch(error => {
                 console.log(error);
@@ -61,34 +62,17 @@ class Resource extends Component {
             })
     }
 
-    editCellHandler = (event, projectId, resourceId, featureId, featureName, featureCode, isFeatureName) => {
-        var element = event.target;
-        var curVal = element.innerHTML;
-        element.innerHTML = "";
-        var newObj = document.createElement("input");
-        newObj.className = "edit";
-        newObj.value = curVal;
-        element.appendChild(newObj);
-        var padding = element.style.padding;
-        element.style.padding = '0'
-        newObj.focus();
-        newObj.onblur = () => {
-            element.innerHTML = this.value ? this.value : newObj.value;
-            element.style.padding = padding
-            if (featureId === '') {
-                this.updateResourceHandler(projectId, resourceId, newObj.value, featureName, featureCode, isFeatureName)
-            } else {
-                this.updateFeatureValueHandler(projectId, resourceId, featureId, newObj.value)
-            }
+    searchInputChangeHandler = (event) => {
+        const filterData = this.state.savedResource.data.filter(checkName)
+        const resource = {...this.state.Resource}
+        resource.data = filterData
+        this.setState({Resource: resource})
+        function checkName(data) {
+            return data.resource.name.includes(event.target.value)
         }
     }
 
-    searchHandler = () => {
-        console.log("Search")
-    }
-
     optionHandler = (event) => {
-        console.log("Selection")
         this.setState({ showOption: !this.state.showOption })
     }
 
@@ -98,8 +82,19 @@ class Resource extends Component {
     }
 
     addColHandler = () => {
+        const feature = {};
+        console.log(this.state.Resource)
+        const len = this.state.Resource.data[0].features.length;
+        feature['name'] = 'Untitle' + len;
+        feature['projectId'] = this.state.CurrentProjectId;
+        axios.post('/project/saveFeature', feature)
+            .then(response => {
+                window.location.reload(true)
+            })
+            .catch(error => {
+                console.log(error)
+            })
         this.optionHandler()
-        console.log("Add col")
     }
 
     importCSVHandler = () => {
@@ -114,8 +109,8 @@ class Resource extends Component {
             for (let key in this.state.Resource.data) {
                 datas.push(this.state.Resource.data[key])
             }
-            for (let key in this.state.Resource.data[0].features) {
-                titles.push(this.state.Resource.data[0].features[key].name);
+            for (let key in this.state.savedResource.data[0].features) {
+                titles.push(this.state.savedResource.data[0].features[key].name);
             }
         }
 
@@ -141,7 +136,7 @@ class Resource extends Component {
 
         const table = (
             <div style={tabaleContainerStyle}>
-                <Table style={style} colWidth={colWidth} titles={titles} datas={datas} isEditable={false} editable={this.editCellHandler} />
+                <Table style={style} colWidth={colWidth} titles={titles} datas={datas} isEditable={false} />
             </div>
         );
 
@@ -149,7 +144,7 @@ class Resource extends Component {
             <div className={classes.Container}>
                 <div className={classes.TopBar}>
                     <div>
-                        <Search clicked={this.searchHandler} placeholder={"Keyword"} />
+                        <Search clicked={this.searchHandler} placeholder={"Keyword"} changed={this.searchInputChangeHandler} />
                     </div>
                     <div>
                         <span className={classes.Title}>Resource Catalog</span>
@@ -171,4 +166,13 @@ class Resource extends Component {
     }
 }
 
-export default Resource;
+function mapStateToProps(state) {
+    const { getProjectInfo, featureIdList, projectId } = state.project
+    return {
+        getProjectInfo, featureIdList, projectId
+    }
+}
+const connectedResource = connect(mapStateToProps)(Resource)
+export default connectedResource;
+
+// export default Resource;

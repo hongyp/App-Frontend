@@ -11,6 +11,6 @@
     background: rgb(196, 80, 38);
     font-size: 17px;
     border: none;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-radius: 0 20% 20% 0;
 }

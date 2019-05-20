@@ -3,7 +3,7 @@ import Buttom from '../Button/Button'
 import classes from './Popup.module.css'
 // import PropTypes from 'prop-types';
 
-export default class popup extends Component {
+class popup extends Component {
 
     constructor(props) {
         super(props);
@@ -42,11 +42,11 @@ export default class popup extends Component {
             width: '30%',
             backgroundColor: 'rgb(235, 67, 37)',
         }
-
+        console.log(this.props.children)
         return (
             <div className={classes.popuptext} ref={this.setWrapperRef}>
                 <div className={classes.Content}>
-                    <div className={[classes.Title, classes.Text].join(' ')}>Cost Manager</div>
+                    <div className={[classes.Title, classes.Text].join(' ')}>{this.props.children}</div>
                     <div className={classes.Text}>Member since November-2015</div>
                 </div>
                 <div className={classes.Botton}>
@@ -54,16 +54,32 @@ export default class popup extends Component {
                         <div style={style}>
                             <Buttom type="button" clicked={this.props.clickedProfile} customized={"Popbtn"}>Profile</Buttom>
                         </div>
-                        <div style={style}>
-                            <Buttom type="button" clicked={this.props.clickedLogout} customized={"Popbtn"}>Log out</Buttom>
-                        </div>
+                        { this.props.isLogin === true &&
+                            <div style={style}>
+                                <Buttom type="button" clicked={this.props.clickedLogout} customized={"Popbtn"}>Log out</Buttom>
+                            </div>
+                        }
+                        { this.props.isLogin !== true &&
+                            <div style={style}>
+                                <Buttom type="button" clicked={this.props.clickedLogin} customized={"Popbtn"}>Log in</Buttom>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+// function mapStateToProps(state) {
+//     const { loggedIn } = state.authentication;
+//     return {
+//         loggedIn
+//     };
+// }
+// const connectedLoginPage = connect(mapStateToProps)(popup)
+// export default connectedLoginPage
 // popup.propTypes = {
 //     children: PropTypes.element.isRequired,
 //   };
-// export default popup;
+export default popup;
