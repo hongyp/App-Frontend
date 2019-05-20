@@ -42,6 +42,9 @@ public class UsersController {
 			System.err.println(token);
 //		jwtTokenProvider.verifyToken(token);
 			model.put("username", email);
+//			model.put("firstName", user.getFirstName());
+//			model.put("lastName", user.getLastName());
+//			model.put("roles", user.getRoles());
 			model.put("token", token);
 			return ok(model);
 		} catch (AuthenticationException authenticationException) {

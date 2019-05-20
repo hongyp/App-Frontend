@@ -30,7 +30,7 @@ public class AppController  {
 	}
 	
 //	Read API
-	@RequestMapping(value = "/getProject/{projectId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/getData/{projectId}", method = RequestMethod.GET)
 	public List<Data> getTableByProjectId(@PathVariable("projectId") Project project) {
 		return appService.generateRows(project.getId());
 	}
