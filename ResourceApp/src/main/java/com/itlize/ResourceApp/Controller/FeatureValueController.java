@@ -42,8 +42,12 @@ public class FeatureValueController {
 //	Update API
 	@RequestMapping(value = "/updateFeatureValue", method = RequestMethod.PUT)
 	public FeatureValue updateFeatureValue(@RequestBody FeatureValue featureValue) {
-		 return featureValueService.updateFeatureValue(featureValue.getValue(), featureValue.getProjectId(), 
+		try {
+			return featureValueService.updateFeatureValue(featureValue.getValue(), featureValue.getProjectId(), 
 														featureValue.getResourceId(), featureValue.getFeatureId());
+		} catch (Exception e) {
+			return featureValueService.saveValueOfFeature(featureValue);
+		}
 	}
 	
 }

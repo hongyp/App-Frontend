@@ -3,6 +3,7 @@ package com.itlize.ResourceApp.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,8 +28,8 @@ public class ProjectController {
 
 	
 //	Read API
-	@RequestMapping(value = "/getProject", method = RequestMethod.POST)
-	public Project getProjectById(@RequestBody Project project) {
+	@RequestMapping(value = "/getProject/{id}", method = RequestMethod.GET)
+	public Project getProjectById(@PathVariable("id") Project project) {
 		return projectService.getProjectById(project.getId());
 	}
 	
