@@ -1,13 +1,21 @@
 import React, { Component } from 'react'
-import axios from '../../axios/axios-app'
-
+// import axios from '../../axios/axios-app'
+import { connect } from 'react-redux'
+import { history } from '../../_helpers/history'
 import classes from './Signup.module.css'
 import Input from '../Elements/Input/Input.js'
 import Button from '../Elements/Button/Button.js'
 
 import signupImg from '../../asset/signup.png'
+import { userActions } from '../../_actions';
 
 class SignUp extends Component {
+    constructor(props) {
+        super(props);
+
+        this.inputChangeHandler = this.inputChangeHandler.bind(this)
+        this.submitHandler = this.submitHandler.bind(this)
+    }
 
     state = {
         signupForm: {
@@ -67,7 +75,8 @@ class SignUp extends Component {
         },
         formIsValid: false,
         loading: false,
-        errorInfo: null
+        errorInfo: null,
+        submitted: false
     }
 
     checkValidity = (value, validation) => {
@@ -115,29 +124,28 @@ class SignUp extends Component {
         this.setState({ signupForm: updateForm, formIsValid: formIsValid });
     }
 
+    loginHandler = () => {
+        history.push('/login')
+    }
+
     submitHandler = (event) => {
         event.preventDefault();
-        this.setState({ loading: true });
+        this.setState({ loading: true, submitted: true });
         const formData = {};
         for (let inputIdentifier in this.state.signupForm) {
             formData[inputIdentifier] = this.state.signupForm[inputIdentifier].value
         }
-        console.log(formData)
+        const { dispatch } = this.props
+        // console.log(formData)
         // do http request here
-        axios.post('/signup', formData)
-            .then(response => {
-                // console.log(response);
-                this.props.history.push('/login');
-            })
-            .catch(error => {
-                console.log("CONFLICT" + error);
-                console.log("Email(Username) already exist");
-                this.setState({errorInfo: "Please fill the form"})
-            })
+        if (formData.firstName && formData.lastName && formData.email && formData.password) {
+            dispatch(userActions.register(formData));
+        }
     }
 
     render() {
-
+        // const { registering } = this.props;
+        const { submitted } = this.state
         const formElementsArray = [];
         for (let key in this.state.signupForm) {
             formElementsArray.push({
@@ -161,6 +169,7 @@ class SignUp extends Component {
                         changed={(event) => this.inputChangeHandler(event, formElement.id)}
                         errorInfo={this.state.errorInfo}
                         hasCheckBox={false}
+                        submitted = {submitted}
                     />
                 ))}
                 <Button btnType='Success' disabled={!this.state.formIsValid} >Sign up</Button>
@@ -172,9 +181,20 @@ class SignUp extends Component {
                 <img src={signupImg} className={classes.Img} alt="Smiley face"></img>
                 <div className={classes.ErrorMessage}>{this.state.errInfo}</div>
                 {form}
+                <div className={[classes.FormBottom].join(' ')}>
+                    <div className={classes.BottomText} onClick={this.loginHandler}>Already have account?</div>
+                </div>
             </div>
         );
     }
 }
 
-export default SignUp;
+function mapStateToProps(state) {
+    const { registering } = state.registration;
+    return {
+        registering
+    }
+}
+const connectedRegisterPage = connect(mapStateToProps)(SignUp)
+export default connectedRegisterPage;
+// export default SignUp;

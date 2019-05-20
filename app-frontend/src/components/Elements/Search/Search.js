@@ -8,8 +8,8 @@ const search = (props) => {
 
     return (
         <Aux>
-            <input className={classes.Input} type="text" placeholder={props.placeholder}/>
-            <button className={classes.Button} type="submit" onClick={props.clicked}>
+            <input className={classes.Input} type="text" placeholder={props.placeholder} onChange={props.changed}/>
+            <button className={classes.Button} type="submit" onClick={props.clicked} disabled>
                 <FontAwesomeIcon color="rgb(255, 255, 255)" icon="search" />
             </button>
         </Aux>

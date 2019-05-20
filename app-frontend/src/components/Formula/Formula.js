@@ -2,29 +2,20 @@ import React, { Component } from 'react'
 import axios from '../../axios/axios-app'
 import classes from './Formula.module.css'
 import Table from '../Elements/Table/Table'
-import Select from '../Elements/Selection/Selection'
+import { connect } from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { projectAction } from '../../_actions';
 
 class Formula extends Component {
 
     state = {
-        ProjectResource: null,
+        ProjectResource: {data: []},
         ProjectList: [],
-        disableShowFeatureCols: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
         loading: false
     }
 
     componentDidMount() {
-        axios.get('/getProject/1')
-            .then(response => {
-                console.log(response)
-                this.setState({ ProjectResource: response })
-            })
-            .catch(error => {
-                console.log(error)
-                console.log("Fail to get data")
-            })
         axios.get('/getAllProjects')
             .then(response => {
                 this.setState({ ProjectList: response.data });
@@ -32,7 +23,7 @@ class Formula extends Component {
     }
 
     selectProjectHandlder = (event) => {
-        axios.get('/getProject/' + Number(event.target.value))
+        axios.get('/getData/' + Number(event.target.value))
             .then(response => {
                 this.setState({ ProjectResource: response })
             })
@@ -99,7 +90,7 @@ class Formula extends Component {
         var curVal = element.innerHTML;
         element.innerHTML = "";
         var newObj = document.createElement("input");
-        newObj.className = "edit";
+        newObj.className = "editCell";
         newObj.value = curVal;
         element.appendChild(newObj);
         var padding = element.style.padding;
@@ -117,35 +108,39 @@ class Formula extends Component {
     }
 
     editBtnHandler = (event) => {
-        console.log("Jump")
-        this.props.history.push('/edit')
+        this.props.history.push('/table/edit')
     }
 
     render() {
-        const disableShowFeatureCols = [...this.state.disableShowFeatureCols]
+        const { projectList, featureIdList, projectId } = this.props
+        this.props.dispatch(projectAction.showSelectedFeatures(featureIdList, projectList, projectId))
+        // console.log(projectList)
         const datas = []
+        const selectedColIds = featureIdList !== undefined ? [...featureIdList] : []
+        // console.log(projectList)
+        // console.log(featureIdList)
+        // console.log(selectedColIds)
         const titles = ['Resource Name', 'Resource Code']
-        var Resource = null;
-        if (this.state.ProjectResource !== null) {
-            Resource = { ...this.state.ProjectResource }
-        }
+        var Resource = projectList !== undefined ? [...projectList] : [];
         // console.log(Resource)
-        if (Resource !== null && Resource.data[0] !== undefined) {
-            for (let key in Resource.data[0].features) {
-                if (disableShowFeatureCols.includes(Number(key))) { continue; }
-                titles.push(Resource.data[0].features[key].name);
+        function checkFeatureId(feature) {
+            return selectedColIds.includes(feature.id)
+        }
+        for (let each of Resource) {
+            const features = [...each.features]
+            const filterFeature = features.filter(checkFeatureId)
+            const data = {...each}
+            data.features = filterFeature
+            if (featureIdList === undefined) {
+                data.feature = []
             }
-            const order = disableShowFeatureCols.reverse();
-            for (let key in Resource.data) {
-                var obj = Resource.data
-                var objFeatures = obj[key].features
-                for (let index in order) {
-                    objFeatures.splice(order[index], 1)
-                }
-                datas.push(obj[key])
+            datas.push({...data})
+        }
+        if (datas.length > 0) {
+            for (let feature of datas[0].features) {
+                titles.push(feature.name)
             }
         }
-        // console.log(titles)
         const colsNum = titles.length;
         const colWidth = String(100 / colsNum) + "%";
         var tableWith = '';
@@ -168,7 +163,7 @@ class Formula extends Component {
 
         return (
             <div className={classes.Container}>
-                <Select list={this.state.ProjectList} clicked={(e) => this.selectProjectHandlder(e)} />
+                {/* <Select list={this.state.ProjectList} clicked={(e) => this.selectProjectHandlder(e)} /> */}
                 <div className={classes.TablePart}>
                     <div className={classes.TopBar}>
                         <div className={classes.Title}>
@@ -195,5 +190,12 @@ class Formula extends Component {
     }
 
 }
-
-export default Formula;
+function mapStateToProps(state) {
+    const { projectList, featureIdList, projectId } = state.project
+    return {
+        projectList, featureIdList, projectId
+    }
+}
+const connectedFormula = connect(mapStateToProps)(Formula)
+export default connectedFormula;
+// export default Formula;

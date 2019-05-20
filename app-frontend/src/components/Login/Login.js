@@ -1,13 +1,26 @@
 import React, { Component } from 'react'
-import axiosBackend from '../../axios/axios-app'
-
+// import axiosBackend from '../../axios/axios-app'
+import { history } from '../../_helpers/history'
 import classes from './Login.module.css'
 import Input from '../Elements/Input/Input.js'
 import Button from '../Elements/Button/Button.js'
 
 import loginImg from '../../asset/login.png'
+import { userActions } from '../../_actions';
+import { connect } from 'react-redux';
 
 class Login extends Component {
+
+    constructor(props) {
+        super(props);
+
+        // reset login status
+        this.props.dispatch(userActions.logout());
+
+        this.inputChangeHandler = this.inputChangeHandler.bind(this)
+        this.submitHandler = this.submitHandler.bind(this)
+
+    }
 
     state = {
         loginForm: {
@@ -41,28 +54,26 @@ class Login extends Component {
         },
         formIsValid: false,
         loading: false,
-        errInfo: null
+        errInfo: null,
+        submitted: false
     }
 
     submitHandler = (event) => {
         // Important!!! Without preventing default, btn will rediret to current page
         // The preventDefault() method will prevent the link above from following the URL
         event.preventDefault();
-        this.setState({ loading: true });
+        // this.setState({ loading: true });
+        this.setState({ submitted: true });
         const formData = {};
         for (let inputIdentifier in this.state.loginForm) {
             formData[inputIdentifier] = this.state.loginForm[inputIdentifier].value
         }
-        // console.log(formData)
-        axiosBackend.post( '/login', formData )
-            .then( response => {
-                // console.log(response);
-                this.props.history.push('/resource');
-            } )
-            .catch( error => {
-                console.log("UNAUTHORIZATION : " + error);
-                this.setState({errInfo: "Please Enter valid username and password"});
-            } );
+        formData['submitted'] = true;
+        const { email, password } = formData
+        const { dispatch } = this.props;
+        if (email && password) {
+            dispatch(userActions.login(email, password));
+        }
     }
 
     checkValidity = (value, validation) => {
@@ -111,8 +122,12 @@ class Login extends Component {
     }
 
     signUpHandler = () => {
-        console.log("Signup page")
-        this.props.history.push('/signup');
+        // console.log("Signup page")
+        history.push('/signup');
+    }
+
+    resourcePageHandler = () => {
+        history.push('/table/resource');
     }
 
     resetPasswordHandler = () => {
@@ -151,26 +166,37 @@ class Login extends Component {
 
         return (
             <>
-            <div className={classes.LoginForm}>
-                <img src={loginImg} className={classes.Img} alt="Smiley face"></img>
-                <div className={classes.ErrorMessage}>{this.state.errInfo}</div>
-                {form}
-                {/* Without event.preventDefault */}
-                {/* <Button type="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.submitHandler}>Login</Button> */}
+                <div className={classes.LoginForm}>
+                    <img src={loginImg} className={classes.Img} alt="Smiley face"></img>
+                    <div className={classes.ErrorMessage}>{this.state.errInfo}</div>
+                    {form}
+                    {/* Without event.preventDefault */}
+                    {/* <Button type="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.submitHandler}>Login</Button> */}
 
-                <div className={classes.FormBottom}>
-                    <div className={[classes.BottomBtn].join(' ')}>
-                        <Button type="button" btnType="Normal" clicked={this.signUpHandler}>Sign up</Button>
+                    <div className={classes.FormBottom}>
+                        <div className={[classes.BottomBtn].join(' ')}>
+                            <Button type="button" btnType="Normal" clicked={this.signUpHandler}>Sign up</Button>
+                        </div>
+                    </div>
+                    <div className={[classes.FormBottom, classes.BottomText].join(' ')}>
+                        <div onClick={this.resetPasswordHandler}>Forgot password?</div>
+                    </div>
+                    <div className={classes.BottomText}>
+                        <div onClick={this.resourcePageHandler}>Resource Page</div>
                     </div>
                 </div>
-                <div className={[classes.FormBottom, classes.BottomText].join(' ')}>
-                    <div onClick={this.resetPasswordHandler}>Forgot password?</div>
-                </div>
-            </div>
             </>
         );
     }
 
 }
 
-export default Login;
+function mapStateToProps(state) {
+    const { loggingIn } = state.authentication;
+    return {
+        loggingIn
+    };
+}
+const connectedLoginPage = connect(mapStateToProps)(Login)
+export default connectedLoginPage
+// export default Login;

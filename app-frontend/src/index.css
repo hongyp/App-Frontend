@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.editCell {
+  width: 70%;
+  font-size: 90%;
+  font-weight: bolder;
+  margin-left: 0;
+  padding: 6px 4px;
+  border: none;
+  border-color: rgb(254, 125, 27);
+}

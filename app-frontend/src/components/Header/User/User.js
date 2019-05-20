@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classes from './User.module.css';
+import { history } from '../../../_helpers/history'
 
 import Popup from '../../Elements/Popup/Popup'
+import { userActions } from '../../../_actions';
+import { connect } from 'react-redux'
 
 class User extends Component {
 
@@ -22,15 +25,24 @@ class User extends Component {
     }
 
     logoutHandler = () => {
-        console.log("btn of logout")
+        // console.log("btn of logout")
+        const { dispatch } = this.props;
+        dispatch(userActions.logout());
         this.popupHandler()
     }
 
-    render() {
+    clickedLogin = () => {
+        // console.log(this.props)
+        history.push('/login');
+    }
 
+    render() {
+        const { loggedIn, user } = this.props
         var popup = null;
         if (this.state.showPopup) {
-            popup = (<Popup clickedProfile={this.profileHandler} clickedLogout={this.logoutHandler} closePopup={this.popupHandler} />)
+            popup = (<Popup clickedProfile={this.profileHandler} isLogin={loggedIn}
+                clickedLogout={this.logoutHandler} clickedLogin={this.clickedLogin} closePopup={this.popupHandler} 
+                >{loggedIn === true ? user.username : 'Cost Manager' }</Popup>)
         }
 
         return (
@@ -44,7 +56,7 @@ class User extends Component {
                     {popup}
                 </div>
                 <div className={classes.Title}>
-                    <span>Cost Manager</span>
+                    <span>{loggedIn === true ? user.username : 'Cost Manager' }</span>
                 </div>
                 <div>
                     <FontAwesomeIcon color="rgb(0, 0, 0)" size="2x" icon="question-circle" />
@@ -54,5 +66,12 @@ class User extends Component {
     }
 
 }
-
-export default User;
+function mapStateToProps(state) {
+    const { loggedIn, user } = state.authentication;
+    return {
+        loggedIn, user
+    };
+}
+const connectedUserPage = connect(mapStateToProps)(User)
+export default connectedUserPage
+// export default User;

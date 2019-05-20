@@ -12,7 +12,7 @@ const select = (props) => {
     
     return (
         <div className={classes.Container}>
-            <select onChange={props.clicked} className={classes.Select}>
+            <select onChange={props.changed} className={classes.Select}>
                 { list && 
                     list.map((project, index) => (
                         <Option key={index} value={project.id}>{project.name}</Option>

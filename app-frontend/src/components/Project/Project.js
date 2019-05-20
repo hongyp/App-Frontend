@@ -5,15 +5,18 @@ import axios from '../../axios/axios-app'
 import Select from '../Elements/Selection/Selection'
 import Table from '../Elements/Table/Table'
 import ProjectPart from './LeftTable/LeftTable'
+import { connect } from  'react-redux'
+import { history } from '../../_helpers/history'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { projectAction } from '../../_actions';
 
 class Project extends Component {
 
     state = {
         Resource: null,
         ProjectList: [],
-        initProjectId: "1",
+        initProjectId: 1,
         leftResourceIdList: [],
         rightResourceIdList: [],
         RightResource: [],
@@ -21,7 +24,7 @@ class Project extends Component {
     }
 
     componentDidMount() {
-        axios.get('/getProject/' + this.state.initProjectId)
+        axios.get('/getData/' + this.state.initProjectId)
             .then(response => {
                 this.setState({ Resource: response })
             })
@@ -36,14 +39,17 @@ class Project extends Component {
     }
 
     selectProjectHandlder = (event) => {
-        axios.get('/getProject/' + Number(event.target.value))
+        this.setState({RightResource: []});
+        const val = Number(event.target.value)
+        axios.get('/getData/' + val)
             .then(response => {
-                this.setState({ Resource: response })
+                this.setState({ Resource: response, initProjectId: val })
             })
             .catch(error => {
                 console.log(error);
                 this.setState({ errorInfo: 'Not found Reource' })
             });
+        this.cancelLeftAllHandler()
     }
 
     updateResourceHandler = (projectId, resourceId, newVal, featureName, featureCode, isFeatureName) => {
@@ -79,30 +85,7 @@ class Project extends Component {
             })
     }
 
-    editCellHandler = (event, projectId, resourceId, featureId, featureName, featureCode, isFeatureName) => {
-        var element = event.target;
-        var curVal = element.innerHTML;
-        element.innerHTML = "";
-        var newObj = document.createElement("input");
-        newObj.className = "edit";
-        newObj.value = curVal;
-        element.appendChild(newObj);
-        var padding = element.style.padding;
-        element.style.padding = '0'
-        newObj.focus();
-        newObj.onblur = () => {
-            element.innerHTML = this.value ? this.value : newObj.value;
-            element.style.padding = padding
-            if (featureId === '') {
-                this.updateResourceHandler(projectId, resourceId, newObj.value, featureName, featureCode, isFeatureName)
-            } else {
-                this.updateFeatureValueHandler(projectId, resourceId, featureId, newObj.value)
-            }
-        }
-    }
-
     optionHandler = (event) => {
-        console.log("Selection")
         this.setState({ showOption: !this.state.showOption })
     }
 
@@ -132,8 +115,6 @@ class Project extends Component {
     }
 
     checkBoxDeleteHandler = (event, resourceId) => {
-        // console.log(this.state.RightResource)
-        // console.log(resourceId)
         const rightResourceIdList = [...this.state.rightResourceIdList]
         if (event.target.checked) {
             rightResourceIdList.push(Number(resourceId))
@@ -148,26 +129,16 @@ class Project extends Component {
     }
 
     addToRightBtnHandler = (event) => {
-        // console.log(this.leftResourceIdList)
         const list = [...this.state.RightResource]
-        // const Resource = []
-        // var leftRemoveIndexList = [...this.state.leftRemoveIndexList]
-        // leftRemoveIndexList = leftRemoveIndexList.sort().reverse()
-        // console.log(leftRemoveIndexList)
         if (this.state.Resource) {
             for (let key in this.state.Resource.data) {
-                // const obj = this.state.Resource.data[key]
                 if (this.state.leftResourceIdList.includes(this.state.Resource.data[key].resource.id)
                     && !list.includes(this.state.Resource.data[key])) {
                     list.push(this.state.Resource.data[key])
                 }
-                // if (!leftRemoveIndexList.includes(Number(key))) {
-                //     Resource.push(this.state.Resource.data[key])
-                // }
             }
         }
         this.setState({RightResource: list})
-                            // , Resource: {data:Resource}})
         this.cancelLeftAllHandler()
         this.cancelRightAllHandler()
     }
@@ -212,15 +183,20 @@ class Project extends Component {
         }
     }
 
+    submitHandler = () => {
+        history.push('/formula')
+    }
+
     render() {
-        console.log(this.state.Resource)
-        // console.log(this.state.leftResourceIdList)
+        // console.log(this.state.initProjectId)
+        // deep copy left table data
         const datas = []
         var Resource = { ...this.state.Resource }
+        // console.log(this.state.Resource)
         if (Resource) {
             for (let key in Resource.data) {
-                datas.push(Resource.data[key])
-                Resource.data[key].features = []
+                datas.push({...Resource.data[key]})
+                datas[key].features = []
             }
         }
         const colWidth = '50%';
@@ -228,19 +204,29 @@ class Project extends Component {
         const style = {
             width: '100%'
         }
+        // deep copy right table data
+        var rightDatas = []
+        Resource = [...this.state.RightResource]
+        if (Resource) {
+            for (let key in Resource) {
+                rightDatas.push({...Resource[key]})
+                rightDatas[key].features = []
+            }
+        }
+        // Redux for seletedList
+        const { featureIdList } = this.props
+        this.props.dispatch(projectAction.selectedProjectList(this.state.RightResource, featureIdList, this.state.initProjectId))
 
-        const rightDatas = [...this.state.RightResource]
         return (
             <div className={classes.Container}>
                 <div className="project-page">
-                    <Select list={this.state.ProjectList} clicked={(e) => this.selectProjectHandlder(e)} />
+                    <Select list={this.state.ProjectList} changed={this.selectProjectHandlder} />
                 </div>
                 <div className={classes.Tables}>
                     <ProjectPart header={"Resource Catalog"} optionHandler={this.optionHandler} selectLeftAllHandler={this.selectLeftAllHandler} cancelLeftAllHandler={this.cancelLeftAllHandler}
                                     addToRightBtnHandler={this.addToRightBtnHandler} 
                                     hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={datas}
-                                    checkBoxAddHandler={this.checkBoxAddHandler} showOption={this.state.showOption} isEditable={true}
-                                    editCellHandler={this.editCellHandler}/>
+                                    checkBoxAddHandler={this.checkBoxAddHandler} showOption={this.state.showOption} isEditable={true}/>
                     <div id="right-table" className={classes.Table}>
                         <div className={classes.TopBar}>
                             <div className={classes.Title}>
@@ -255,10 +241,24 @@ class Project extends Component {
                         <Table hasCheckBox={true} style={style} colWidth={colWidth} titles={titles} datas={rightDatas} checkboxClick={this.checkBoxDeleteHandler} isEditable={false} editable={this.editCellHandler} />
                     </div>
                 </div>
+                <div className={classes.Bottom}>
+                    <button className={classes.SubmitButton} onClick={this.submitHandler}>
+                        <FontAwesomeIcon color="rgb(255, 255, 255)" icon="check" /> &nbsp;
+                        submit
+                    </button>
+                </div>
             </div>
         )
     }
 
 }
 
-export default Project;
+function mapStateToProps(state) {
+    const { projectList, featureIdList, projectId } = state.project
+    return {
+        projectList, featureIdList, projectId
+    }
+}
+const connectedProjectPage = connect(mapStateToProps)(Project)
+export default connectedProjectPage;
+// export default Project;
