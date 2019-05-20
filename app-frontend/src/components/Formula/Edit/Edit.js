@@ -62,7 +62,7 @@ class Edit extends Component {
                     console.log(error)
                 })
         }
-        history.push('/formula')
+        history.push('/table/formula')
     }
 
     checkboxClick = (event, featureValue, featureId) => {

@@ -184,7 +184,7 @@ class Project extends Component {
     }
 
     submitHandler = () => {
-        history.push('/formula')
+        history.push('/table/formula')
     }
 
     render() {

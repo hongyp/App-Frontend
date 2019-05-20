@@ -12,6 +12,7 @@ class Formula extends Component {
     state = {
         ProjectResource: {data: []},
         ProjectList: [],
+        seletedProjects: [],
         loading: false
     }
 
